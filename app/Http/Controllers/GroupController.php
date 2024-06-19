@@ -2,65 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HelperFunctions;
 use App\Models\group;
-use App\Http\Requests\StoregroupRequest;
-use App\Http\Requests\UpdategroupRequest;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function createGroup(Request $request)
     {
-        //
+        $group = new Group();
+        $group->group_name = $request->input('group_name');
+        $group->course_id = $request->input('course_id');
+        $group->teacher_id = $request->input('teacher_id');
+        $group->save();
+
+        return response()->json(['message' => 'Group created successfully', 'group' => $group], 201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    //----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoregroupRequest $request)
+    public function deleteGroup($id)
     {
-        //
-    }
+        HelperFunctions::deleteItem(group::class, $id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(group $group)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(group $group)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdategroupRequest $request, group $group)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(group $group)
-    {
-        //
+        return response()->json(['message' => 'Group deleted succesfully']);
     }
 }

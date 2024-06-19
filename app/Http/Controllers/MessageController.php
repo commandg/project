@@ -2,65 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HelperFunctions;
 use App\Models\message;
-use App\Http\Requests\StoremessageRequest;
-use App\Http\Requests\UpdatemessageRequest;
+use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function createMessage(Request $request)
     {
-        //
+        $message = new Message();
+        $message->group_id = $request->input('group_id');
+        $message->body = $request->input('body');
+        $message->sent_date = now(); // automatically set the sent date to the current date and time
+        $message->save();
+
+        return response()->json(['message' => 'Message created successfully', 'message' => $message], 201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    //------------------------------------------------------------------------------------------------------------
+
+    public function editMessage(Request $request)
     {
-        //
+        $message = Message::find($request->input('message_id'));
+
+        if (!$message) {
+            return response()->json(['error' => 'Message not found'], 404);
+        }
+
+        $message->body = $request->input('body');
+        $message->save();
+
+        return response()->json(['message' => 'Message updated successfully', 'essage' => $message], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoremessageRequest $request)
-    {
-        //
-    }
+    //----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(message $message)
+    public function deleteMessage($id)
     {
-        //
-    }
+        HelperFunctions::deleteItem(message::class, $id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(message $message)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatemessageRequest $request, message $message)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(message $message)
-    {
-        //
+        return response()->json(['message' => 'Message deleted succesfully']);
     }
 }
