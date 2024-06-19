@@ -28,7 +28,7 @@ Route::group(['prefix' => 'user'], function () {
 });
 Route::group(['prefix' => 'admin'], function () {
     Route::put('/update-teacher-status/{userId}', [TeacherController::class, 'updateTeacherStatus']);
-    Route::put('deleteTeacher/{userId}', [TeacherController::class, 'deleteTeacher']);
+    Route::put('deleteTeacher/{teacherId}', [TeacherController::class, 'deleteTeacher']);
     Route::put('createGroup', [GroupController::class, 'createGroup']);
     Route::put('deleteGroup/{groupId}', [GroupController::class, 'deleteGroup']);
 });
