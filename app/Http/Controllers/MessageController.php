@@ -16,7 +16,7 @@ class MessageController extends Controller
         $message->sent_date = now(); // automatically set the sent date to the current date and time
         $message->save();
 
-        return response()->json(['message' => 'Message created successfully', 'message' => $message], 201);
+        return response()->json(['message' => 'Message created successfully', $message], 201);
     }
 
     //------------------------------------------------------------------------------------------------------------
